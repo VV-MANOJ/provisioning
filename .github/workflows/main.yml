@@ -15,3 +15,11 @@ jobs:
         
       - name: Run Shell Script
         run: bash newinstall.sh
+        
+     - name: Send Email Notification
+        if: ${{ failure() }}
+        env:
+          SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+          EMAIL_RECIPIENT: vardhinenimanoj4@gmail.com
+        run: |
+          echo "Subject: Job Failed - $GITHUB_REPOSITORY - $GITHUB_RUN_NUMBER" | sendmail -f "from@example.com" -t "$EMAIL_RECIPIENT"
